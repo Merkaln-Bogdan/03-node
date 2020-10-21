@@ -1,0 +1,37 @@
+{
+  "name": "01-node-basics",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js ",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bogdan Merkaln <piccasoul19@ukr.net>",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4",
+    "yargs": "^16.0.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "uuidv4": "^6.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Merkaln-Bogdan/01-node-basics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Merkaln-Bogdan/01-node-basics/issues"
+  },
+  "homepage": "https://github.com/Merkaln-Bogdan/01-node-basics#readme",
+  "description": ""
+}
