@@ -3,7 +3,7 @@ const { Router } = require('express');
 const contactsRouter = Router();
 const contactControllers = require("../controllers/contact.controller");
 
-// userRouter.get("/", Controllers.getListContacts );
+
 contactsRouter.post("/", contactControllers.validateCreateContact, contactControllers.createContact);
 contactsRouter.get("/:contactId", contactControllers.validateId, contactControllers.getContact);
 contactsRouter.delete("/:contactId", contactControllers.validateId, contactControllers.deleteContact);

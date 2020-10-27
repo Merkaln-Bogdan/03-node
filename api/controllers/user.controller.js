@@ -42,7 +42,7 @@ static async getCurrentUser(req, res, next){
     const { id , email, subscription } =  req.user
 res.status(200).json({id: id, subscription: subscription, email: email} )
   }catch(err){
-    next(err)
+    next()
   }
 }
 
