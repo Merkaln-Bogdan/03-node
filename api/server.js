@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const usersRouter = require("./routers/usersRouter")
-const contactsRouter = require("./routers/contactsRouter");
+const contactRouter = require("./routers/contactsRouter");
 const mongoose = require('mongoose');
 
 require("dotenv").config();
@@ -13,7 +12,6 @@ module.exports = class UserList {
   async start() {
     this.initServer();
     this.initMiddlewares();
-    this.initUserRoutes()
     this.initRoutes();
     await this.initDataBase();
     this.startListening();
@@ -27,13 +25,10 @@ module.exports = class UserList {
     this.server.use(express.json());
     this.server.use(cors({ origin: "http://localhost:3000" }));
   }
-  initUserRoutes() {
-    this.server.use("/api/user", usersRouter);
-  }
+
   initRoutes() {
-    this.server.use("/api/contacts", contactsRouter);
+    this.server.use("/api/contacts", contactRouter);
   }
-  
 
   startListening() {
     this.server.listen(process.env.PORT, () => {
@@ -41,12 +36,12 @@ module.exports = class UserList {
     });
   }
   async initDataBase() {
-  try{
-      await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true } )
+    try{
+      await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify: false} )
+      console.log("Database connection successful");
     }catch(err){
       console.log(err);
       process.exit(1);
     }
-    console.log("Database connection successful");
   }
 };

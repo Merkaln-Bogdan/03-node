@@ -1,2 +1,2 @@
-const UserServer = require('./api/server')
+const UserServer = require('../api/server')
 new UserServer().start()
