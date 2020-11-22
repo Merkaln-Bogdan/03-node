@@ -3,15 +3,19 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const usersModel = require('../models/user.model');
 const { UnauthorizedError } = require ("../helpers/errors.constructor")
-const {minifyImage} = require('../imageController/imagemin')
+const {minifyImage} = require('../imageController/imagemin');
+const { uuid } = require('uuidv4');
+const sendGridMail = require('../sendgridEmailing/sendgridEmailing');
+
 module.exports = class UserControllers {
-  
+ 
   // Create user controller with solt password bcrypt
 
   get createUser() {
     return this._createUser.bind(this)
   }
   static async _createUser(req, res, next) {
+    console.log(req.body)
     try {
       const _constFactor = 4
       const { password, email } = req.body;
@@ -22,12 +26,15 @@ module.exports = class UserControllers {
       }
       const user = await usersModel.create({
         email,
-        avatarURL: `http://localhost:3000/public/images/${req.file.filename}.jpg`,
+        avatarURL: `http://localhost:3000/public/images/${req.filename}.jpg`,
         password: passwordHash,
       });
+      const verificationToken = uuid()
+      await sendGridMail(email, verificationToken)
       return res.status(201).json({
         id: user._id,
         email: user.email,
+        status: user.status,
         token: user.token
       });
     } catch (err) {
@@ -39,13 +46,11 @@ module.exports = class UserControllers {
 // Get current user with selective information
 
 static async getCurrentUser(req, res, next){
-  try{
+
     const { id , email, subscription } =  req.user
 res.status(200).json({id: id, subscription: subscription, email: email} )
-  }catch(err){
-    next()
-  }
 }
+
 
 // Sign in user by email and password
 
@@ -85,7 +90,6 @@ try{
     // console.log(req.file)
     try {
       await minifyImage(req, res, next);
-      console.log(req.file)
       return res.status(200).json({
         avatarURL: `http://localhost:3000/public/images/${req.file.filename}`,
       });
@@ -147,4 +151,20 @@ if(validateRezult.error){
 next()
   }
 
+  
+ // verify user email by token 
+  static async verifyEmail(req, res, next){
+    try{
+      const {email} = req.body
+      const {verificationToken} = req.params
+
+      if(!verificationToken){
+        throw new NotFoundUserError('user not found!')
+      }
+      await usersModel.findOneAndUpdate(email, {status: "Verified", verificationToken: null})
+      return res.status(200).send('You`re email successfully verified! ')
+    }catch(err){
+      next(err)
+    }
+  }
 }

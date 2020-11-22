@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const userSchema = new Schema(
   {
@@ -10,7 +10,8 @@ const userSchema = new Schema(
       enum: ["free", "pro", "premium"],
       default: "free"
     },
-    token: { type: String, required: false}
+    token: { type: String, required: false, },
+    status: {type: String, enum: ["Verified", "Created"], default: "Created" }
   }
 );
 
@@ -23,10 +24,13 @@ async function findByEmail(email) {
 async function updateToken( id, newtoken ) {
   return await this.findByIdAndUpdate(id, { token: newtoken })
 }
+async function verifyUser(userId) {
+  return await this.findByIdAndUpdate(userId, {status: "Verified", verificationToken: null}, {new: true})
+}
 userSchema.statics.findUserById = findUserById;
 userSchema.statics.updateToken = updateToken;
 userSchema.statics.findByEmail = findByEmail;
+userSchema.statics.verifyUser = verifyUser;
 
 const usersModel = mongoose.model("users", userSchema);
-
-module.exports = usersModel;
+module.exports = usersModel
