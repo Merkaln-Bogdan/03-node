@@ -36,6 +36,12 @@ module.exports = class UserList {
     });
   }
   async initDataBase() {
-    await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify: false} )
+    try{
+      await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify: false} )
+      console.log("Database connection successful");
+    }catch(err){
+      console.log(err);
+      process.exit(1);
+    }
   }
 };

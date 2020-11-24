@@ -15,10 +15,8 @@ module.exports = class Controllers {
     } catch (err) {
       next(err);
     }
-
-
-
   }
+
   static validateCreateContact(req, res, next) {
     const createContactRules = Joi.object({
       name: Joi.string().required(),
@@ -35,9 +33,10 @@ module.exports = class Controllers {
     }
     next()
   }
+
+
   static async getContact(req, res, next) {
     const { contactId } = req.params;
-
     try {
       const contact = await contactsModel.findById(contactId);
       if (!contact) {
@@ -61,6 +60,7 @@ module.exports = class Controllers {
       next(err);
     }
   }
+
   static async updateContacts(req, res, next) {
     try {
       const contact = await contactsModel.findByIdAndUpdate(
@@ -78,6 +78,7 @@ module.exports = class Controllers {
       next(err);
     }
   }
+
   static validateUpdateContact(req, res, next) {
     const updateContactRules = Joi.object({
       name: Joi.string(),
@@ -93,6 +94,7 @@ module.exports = class Controllers {
     }
     next()
   }
+  
   static validateId(req, res, next) {
     const { contactId } = req.params;
     if (!ObjectId.isValid(contactId)) {
