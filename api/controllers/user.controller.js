@@ -93,10 +93,11 @@ module.exports = class UserControllers {
 
     try {
       await minifyImage(req, res, next);
+
       await usersModel.findOneAndUpdate(
         { _id },
         {
-          avatarURL: `http://localhost:4040/${req.file.filename}`,
+          avatarURL: `${process.env.HOSTNAME}/${req.file.filename}`,
         }
       );
       return res.status(200).json({ message: "Image uploaded" });
