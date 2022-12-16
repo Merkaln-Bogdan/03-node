@@ -9,7 +9,7 @@ usersRouter.post(
   userController.createUser
 );
 usersRouter.get(
-  "/users/current",
+  "/current",
   userController.authorize,
   userController.getCurrentUser
 );
