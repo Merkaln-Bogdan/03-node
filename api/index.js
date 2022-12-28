@@ -26,7 +26,9 @@ module.exports = class UserList {
 
   initMiddlewares() {
     this.server.use(express.json());
-    this.server.use(cors({ origin: "https://phonebook-api-v1.onrender.com" }));
+    this.server.use(
+      cors({ origin: "https://merkaln-register-phonebook.netlify.app" })
+    );
     this.server.use(express.static("static"));
   }
   initUserRoutes() {
