@@ -1,8 +1,13 @@
 const { Router } = require("express");
 const contactsRouter = Router();
 const contactControllers = require("../controllers/contact.controller");
+const userController = require("../controllers/user.controller");
 
-contactsRouter.get("/", contactControllers.getListContacts);
+contactsRouter.get(
+  "/",
+  userController.authorize,
+  contactControllers.getListContacts
+);
 contactsRouter.post(
   "/",
   contactControllers.validateCreateContact,

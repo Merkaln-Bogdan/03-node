@@ -26,11 +26,17 @@ module.exports = class UserControllers {
         password: passwordHash,
       });
 
+      const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: 2 * 24 * 60 * 60,
+      });
+
+      usersModel.updateToken(user._id, token);
+
       return res.status(201).json({
         id: user._id,
         email: user.email,
         status: user.status,
-        token: user.token,
+        token: token,
       });
     } catch (err) {
       next(err);
