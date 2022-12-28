@@ -26,7 +26,7 @@ module.exports = class UserList {
 
   initMiddlewares() {
     this.server.use(express.json());
-    this.server.use(cors({ origin: "http://localhost:3000" }));
+    this.server.use(cors({ origin: "https://phonebook-api-v1.onrender.com" }));
     this.server.use(express.static("static"));
   }
   initUserRoutes() {
